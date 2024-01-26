@@ -1,0 +1,5 @@
+comment = 'replace_string:  Created by pgrx'
+default_version = '@CARGO_VERSION@'
+module_pathname = '$libdir/replace_string'
+relocatable = false
+superuser = true
