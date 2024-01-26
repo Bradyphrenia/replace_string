@@ -18,7 +18,10 @@ mod tests {
 
     #[pg_test]
     fn test_substring() {
-        assert_eq!("hello", crate::repl_str("Hello", "H", "h").unwrap().as_str());
+        assert_eq!(
+            "hello",
+            crate::repl_str("Hello", "H", "h").unwrap().as_str()
+        );
     }
 }
 
