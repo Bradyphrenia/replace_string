@@ -1,14 +1,17 @@
-use pgrx::prelude::*;
 extern crate regex;
+
+use std::borrow::Cow;
+
+use pgrx::prelude::*;
 use regex::Regex;
 
 pgrx::pg_module_magic!();
 
 #[pg_extern]
-fn repl_str(str_in: &str, str_old: &str, str_new: &str) -> Result<String, regex::Error> {
-    let re = Regex::new(str_old)?;
-    let result = re.replace_all(str_in, str_new).to_string();
-    Ok(result)
+fn repl_str(str_in: &str, str_old: &str, str_new: &str) -> String {
+    let re = Regex::new(str_old).expect("Failed to create regex.");
+    let result: Cow<str> = re.replace_all(str_in, str_new);
+    result.to_string()
 }
 
 #[cfg(any(test, feature = "pg_test"))]
@@ -18,10 +21,7 @@ mod tests {
 
     #[pg_test]
     fn test_substring() {
-        assert_eq!(
-            "hello",
-            crate::repl_str("Hello", "H", "h").unwrap().as_str()
-        );
+        assert_eq!("hello", crate::repl_str("Hello", "H", "h"));
     }
 }
 
